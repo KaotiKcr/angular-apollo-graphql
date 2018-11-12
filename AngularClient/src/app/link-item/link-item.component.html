@@ -1,0 +1,14 @@
+<div class="card round">
+  <div class="card-content">
+    <p class="title">{{ link.description }}</p>
+    <span> {{ link.updatedAt | amTimeAgo }} </span>
+  </div>
+  <footer class="card-footer">
+    <p class="card-footer-item">
+      <span> View on <a href="{{link.url}}">URL</a> </span>
+    </p>
+    <p class="card-footer-item">
+        <a class="button is-danger" (click)="deleteLink()">Delete</a>
+    </p>
+  </footer>
+</div>

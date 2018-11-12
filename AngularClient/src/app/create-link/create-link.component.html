@@ -1,0 +1,27 @@
+<div class="field">
+  <label class="label has-text-white">Description</label>
+  <div class="control">
+    <input
+      class="input"
+      type="text"
+      placeholder="A description for the link"
+      [(ngModel)]="description"
+    />
+  </div>
+</div>
+
+<div class="field">
+  <label class="label has-text-white">URL</label>
+  <div class="control">
+    <input
+      class="input"
+      type="text"
+      placeholder="A URL for the link"
+      [(ngModel)]="url"
+    />
+  </div>
+</div>
+
+<div class="control">
+  <button class="button is-info" (click)="createLink()">Submit</button>
+</div>
