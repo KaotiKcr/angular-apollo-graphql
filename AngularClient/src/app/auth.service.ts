@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import { GC_AUTH_TOKEN, GC_USER_ID } from './constants';
+import { GS_AUTH_TOKEN, GS_USER_ID } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -14,8 +14,8 @@ export class AuthService {
     return this._isAuthenticated.asObservable();
   }
   saveUserData(id: string, token: string) {
-    localStorage.setItem(GC_USER_ID, id);
-    localStorage.setItem(GC_AUTH_TOKEN, token);
+    localStorage.setItem(GS_USER_ID, id);
+    localStorage.setItem(GS_AUTH_TOKEN, token);
     this.setUserId(id);
   }
   setUserId(id: string) {
@@ -23,13 +23,13 @@ export class AuthService {
     this._isAuthenticated.next(true);
   }
   logout() {
-    localStorage.removeItem(GC_USER_ID);
-    localStorage.removeItem(GC_AUTH_TOKEN);
+    localStorage.removeItem(GS_USER_ID);
+    localStorage.removeItem(GS_AUTH_TOKEN);
     this.userId = null;
     this._isAuthenticated.next(false);
   }
   autoLogin() {
-    const id = localStorage.getItem(GC_USER_ID);
+    const id = localStorage.getItem(GS_USER_ID);
     if (id) {
       this.setUserId(id);
     }

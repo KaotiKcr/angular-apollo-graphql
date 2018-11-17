@@ -17,13 +17,23 @@ namespace Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add Cors
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             //data
             services.AddSingleton<ILinkService, LinkService>();
+            services.AddSingleton<IUserService, UserService>();
 
             //graphql
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 
             services.AddSingleton<LinkType>();     
+            services.AddSingleton<UserType>();     
             
             services.AddSingleton<LinksQuery>();
             services.AddSingleton<ISchema, LinksSchema>();
@@ -43,6 +53,9 @@ namespace Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable Cors
+            app.UseCors("MyPolicy");
 
             // add http for Schema at default url /graphql
             app.UseGraphQL<ISchema>("/graphql");

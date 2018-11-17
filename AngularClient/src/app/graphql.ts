@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 export const ALL_LINKS_QUERY = gql`
   query AllLinksQuery {
-    Links {
+    links {
       id
       createdAt
       updatedAt
@@ -14,7 +14,7 @@ export const ALL_LINKS_QUERY = gql`
 `;
 
 export interface AllLinkQueryResponse {
-  Links: Link[];
+  links: Link[];
 }
 
 export const CREATE_LINK_MUTATION = gql`

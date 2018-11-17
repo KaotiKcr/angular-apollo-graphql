@@ -15,7 +15,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 export class GraphQLModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
 
-    const uri = 'http://localhost:4000/graphql';
+    const uri = 'http://localhost:5000/graphql';
     const http = httpLink.create({ uri });
 
     apollo.create({

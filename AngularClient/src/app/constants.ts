@@ -1,2 +1,2 @@
-export const GC_USER_ID = 'graphcool-user-id';
-export const GC_AUTH_TOKEN = 'graphcool-auth-token';
+export const GS_USER_ID = 'graphqlserver-user-id';
+export const GS_AUTH_TOKEN = 'graphqlserver-auth-token';

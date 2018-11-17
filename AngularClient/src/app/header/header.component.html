@@ -29,10 +29,10 @@
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <a *ngIf="logged" class="button is-primary" (click)="logout()">
+                <a *ngIf="logged" class="button is-white" (click)="logout()">
                   <strong>Log out</strong>
                 </a>
-                <a *ngIf="!logged" [routerLink]="['/login']" class="button is-light">
+                <a *ngIf="!logged" [routerLink]="['/login']" class="button is-white is-outlined">
                   Log in
                 </a>
               </div>
