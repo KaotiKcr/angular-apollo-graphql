@@ -17,6 +17,20 @@ namespace Links.Services
             _links.Add(new Link(3, "Triquimas", "https://www.triquimas.cr/", 1));
         }
 
+        public Task<Link> CreateLinkAsync(Link link)
+        {
+            Link newLink = new Link((_links.Count > 0) ? _links.Max(u => u.Id) + 1 : 1, link.Description, link.Url, link.UserId);
+            _links.Add(newLink);
+            return Task.FromResult(newLink);
+        }
+
+        public Task<Link> DeleteLinkAsync(int id)
+        {
+            Link link = GetLinkById(id);
+            _links.Remove(link);
+            return Task.FromResult(link);
+        }
+
         public Link GetLinkById(int id)
         {
             return GetLinkByIdAsync(id).Result;
@@ -40,6 +54,8 @@ namespace Links.Services
 
     public interface ILinkService
     {
+        Task<Link> CreateLinkAsync(Link link);
+        Task<Link> DeleteLinkAsync(int id);
         Link GetLinkById(int id);
         Task<Link> GetLinkByIdAsync(int id);
         Task<IEnumerable<Link>> GetLinksAsync();

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Link } from '../../models/link.model';
 
 import { DELETE_LINK_MUTATION, DeleteLinkMutationResponse } from '../graphql';
-import {ALL_LINKS_QUERY, AllLinkQueryResponse} from '../graphql';
+import { ALL_LINKS_QUERY } from '../graphql';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 
@@ -32,7 +32,7 @@ export class LinkItemComponent implements OnInit {
             query: ALL_LINKS_QUERY
           });
 
-          data.Links.push(deleteLink);
+          data.links = data.links.filter(item => item.id !== deleteLink.id);
           store.writeQuery({ query: ALL_LINKS_QUERY, data });
         }
       })

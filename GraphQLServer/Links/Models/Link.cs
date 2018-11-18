@@ -4,6 +4,10 @@ namespace Links.Models
 {
     public class Link
     {
+        public Link()
+        {
+
+        }
         public Link(int id, string description, string url, int userId)
         {
             Id = id;
@@ -17,8 +21,8 @@ namespace Links.Models
         public int Id { get; private set; }
         public string Description { get; set; }
         public string Url { get; set; }
-        public int UserId { get; }
-        public DateTime CreatedAt { get; }
+        public int UserId { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; private set; }
     }
 }

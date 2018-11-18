@@ -3,6 +3,7 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using Links.Schema;
+using Links.Schema.InputTypes;
 using Links.Schema.Types;
 using Links.Services;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +19,7 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             // Add Cors
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            services.AddCors(o => o.AddPolicy("Cors", builder =>
             {
                 builder.AllowAnyOrigin()
                        .AllowAnyMethod()
@@ -32,10 +33,15 @@ namespace Server
             //graphql
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 
-            services.AddSingleton<LinkType>();     
-            services.AddSingleton<UserType>();     
-            
+            services.AddSingleton<LinkType>();
+            services.AddSingleton<UserType>();
+            services.AddSingleton<SignupUserPayloadType>();
+
+            services.AddSingleton<LinkInputType>();
+            services.AddSingleton<UserInputType>();
+
             services.AddSingleton<LinksQuery>();
+            services.AddSingleton<LinksMutation>();
             services.AddSingleton<ISchema, LinksSchema>();
 
             services.AddGraphQL(_ =>
@@ -55,7 +61,7 @@ namespace Server
             }
 
             // Enable Cors
-            app.UseCors("MyPolicy");
+            app.UseCors("Cors");
 
             // add http for Schema at default url /graphql
             app.UseGraphQL<ISchema>("/graphql");

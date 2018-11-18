@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 
 import { CREATE_LINK_MUTATION, CreateLinkMutationResponse } from '../graphql';
-import {ALL_LINKS_QUERY, AllLinkQueryResponse} from '../graphql';
+import { ALL_LINKS_QUERY, AllLinkQueryResponse } from '../graphql';
 
 @Component({
   selector: 'app-create-link',
@@ -23,15 +23,18 @@ export class CreateLinkComponent implements OnInit {
       .mutate<CreateLinkMutationResponse>({
         mutation: CREATE_LINK_MUTATION,
         variables: {
-          description: this.description,
-          url: this.url
+          link: {
+            description: this.description,
+            url: this.url,
+            userId: 1
+          }
         },
         update: (store, { data: { createLink } }) => {
           const data: any = store.readQuery({
             query: ALL_LINKS_QUERY
           });
 
-          data.Links.push(createLink);
+          data.links.push(createLink);
           store.writeQuery({ query: ALL_LINKS_QUERY, data });
         }
       })

@@ -1,4 +1,4 @@
-import { Link } from '../models/link.model';
+import { Link, User } from '../models/link.model';
 import gql from 'graphql-tag';
 
 export const ALL_LINKS_QUERY = gql`
@@ -9,6 +9,13 @@ export const ALL_LINKS_QUERY = gql`
       updatedAt
       url
       description
+      user {
+        id
+        createdAt
+        updatedAt
+        name
+        email
+      }
     }
   }
 `;
@@ -18,13 +25,20 @@ export interface AllLinkQueryResponse {
 }
 
 export const CREATE_LINK_MUTATION = gql`
-  mutation CreateLinkMutation($description: String!, $url: String!) {
-    createLink(description: $description, url: $url) {
+  mutation CreateLinkMutation($link: LinkInput!) {
+    createLink(link: $link) {
       id
       createdAt
       updatedAt
       url
       description
+      user {
+        id
+        createdAt
+        updatedAt
+        name
+        email
+      }
     }
   }
 `;
@@ -34,7 +48,7 @@ export interface CreateLinkMutationResponse {
 }
 
 export const DELETE_LINK_MUTATION = gql`
-  mutation DeleteLinkMutation($id: number!) {
+  mutation DeleteLinkMutation($id: Int!) {
     deleteLink(id: $id) {
       id
       createdAt
@@ -48,3 +62,4 @@ export const DELETE_LINK_MUTATION = gql`
 export interface DeleteLinkMutationResponse {
   deleteLink: Link;
 }
+

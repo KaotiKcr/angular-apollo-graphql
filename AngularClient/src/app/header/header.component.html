@@ -1,43 +1,54 @@
 <nav class="navbar is-transparent">
-    <div class="container">
-      <div class="navbar-brand">
-        <span class="navbar-item">
-          <a
-            class="button is-white is-outlined"
-            href="https://github.com/KaotiKcr"
-          >
-            <span class="icon"> <i class="fa fa-github"></i> </span>
-            <span title="Hello from the other side">KaotiKcr</span>
-          </a>
-        </span>
-        <a role="button" class="navbar-burger burger has-text-white" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-      </div>
-      <div id="navbarBasicExample" class="navbar-menu is-transparent">
-          <div class="navbar-start">
-            <a class="navbar-item has-text-white" [routerLink]="['/']">
-              Home
-            </a>
+  <div class="container">
+    <div class="navbar-brand">
+      <span class="navbar-item">
+        <a
+          class="button is-white is-outlined"
+          href="https://github.com/KaotiKcr"
+        >
+          <span class="icon"> <i class="fa fa-github"></i> </span>
+          <span title="Hello from the other side">KaotiKcr</span>
+        </a>
+      </span>
+      <a
+        role="button"
+        class="navbar-burger burger has-text-white"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
+        <span aria-hidden="true"></span> <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu is-transparent">
+      <div class="navbar-start">
+        <a class="navbar-item has-text-white" [routerLink]="['/']"> Home </a>
 
-            <a class="navbar-item has-text-white" [routerLink]="['/create']">
-              Create
+        <a
+          class="navbar-item has-text-white"
+          *ngIf="logged"
+          [routerLink]="['/create']"
+        >
+          Create
+        </a>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a *ngIf="logged" class="button is-white" (click)="logout()">
+              <strong>Log out</strong>
             </a>
-          </div>
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <a *ngIf="logged" class="button is-white" (click)="logout()">
-                  <strong>Log out</strong>
-                </a>
-                <a *ngIf="!logged" [routerLink]="['/login']" class="button is-white is-outlined">
-                  Log in
-                </a>
-              </div>
-            </div>
+            <a
+              *ngIf="!logged"
+              [routerLink]="['/login']"
+              class="button is-white is-outlined"
+            >
+              Log in
+            </a>
           </div>
         </div>
+      </div>
     </div>
-  </nav>
+  </div>
+</nav>

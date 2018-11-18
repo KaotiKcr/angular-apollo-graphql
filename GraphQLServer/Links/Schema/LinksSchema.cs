@@ -8,7 +8,7 @@ namespace Links.Schema
             : base(resolver)
         {
             Query = resolver.Resolve<LinksQuery>();
-            //Mutation = resolver.Resolve<LinksMutation>();
+            Mutation = resolver.Resolve<LinksMutation>();
         }
     }
 }
