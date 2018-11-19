@@ -7,7 +7,7 @@ namespace Links.Schema.Types
 {
     public class UserType : ObjectGraphType<User>
     {
-        public UserType(ILinkService links)
+        public UserType(ILinkService links, IVoteService votes)
         {
             Field(d => d.Id).Description("The id of the user.");
             Field(d => d.CreatedAt).Description("The created date of the user.");
@@ -20,7 +20,10 @@ namespace Links.Schema.Types
                "links",
                resolve: context => links.GetLinksByUserIdAsync(context.Source.Id)
                );
-
+            Field<ListGraphType<VoteType>>(
+               "votes",
+               resolve: context => votes.GetVotesByUserIdAsync(context.Source.Id)
+               );
         }
     }
 }

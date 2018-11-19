@@ -1,7 +1,11 @@
 <h4 *ngIf="loading">Loading...</h4>
 <div class="row columns is-multiline">
-    <app-link-item class="column is-one-third" *ngFor="let link of allLinks" [link]="link">
-    </app-link-item>
+  <app-link-item
+    class="column is-one-third"
+    *ngFor="let link of allLinks"
+    [link]="link"
+    [isAuthenticated]="logged"
+    [updateStoreAfterVote]="updateStoreAfterVote"
+  >
+  </app-link-item>
 </div>
-
-

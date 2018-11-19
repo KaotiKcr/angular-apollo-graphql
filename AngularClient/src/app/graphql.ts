@@ -9,12 +9,18 @@ export const ALL_LINKS_QUERY = gql`
       updatedAt
       url
       description
-      user {
+      postedBy {
         id
         createdAt
         updatedAt
         name
         email
+      }
+      votes {
+        id
+        user {
+          id
+        }
       }
     }
   }
@@ -103,5 +109,33 @@ export interface CreateUserMutationResponse {
   signinUser: {
     token: string;
     user?: User;
+  };
+}
+
+export const CREATE_VOTE_MUTATION = gql`
+  mutation CreateVoteMutation($userId: Int!, $linkId: Int!) {
+    createVote(userId: $userId, linkId: $linkId) {
+      id
+      link {
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
+    }
+  }
+`;
+
+export interface CreateVoteMutationResponse {
+  loading: boolean;
+  createVote: {
+    id: string;
+    link: Link;
+    user: User;
   };
 }

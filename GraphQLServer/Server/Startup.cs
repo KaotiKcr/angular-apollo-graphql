@@ -29,12 +29,14 @@ namespace Server
             //data
             services.AddSingleton<ILinkService, LinkService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IVoteService, VoteService>();
 
             //graphql
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 
             services.AddSingleton<LinkType>();
             services.AddSingleton<UserType>();
+            services.AddSingleton<VoteType>();
             services.AddSingleton<SigninUserPayloadType>();
 
             services.AddSingleton<LinkInputType>();

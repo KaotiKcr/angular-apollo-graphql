@@ -4,7 +4,8 @@ export class Link {
   updatedAt: string;
   description: string;
   url: string;
-  user: User;
+  postedBy?: User;
+  votes?: [Vote];
 }
 
 export class User {
@@ -13,5 +14,12 @@ export class User {
   updatedAt: string;
   name: string;
   email: string;
-  links: [Link];
+  links?: [Link];
+  votes?: [Vote];
+}
+
+export class Vote {
+  id?: string;
+  user?: User;
+  link?: Link;
 }

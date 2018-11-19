@@ -8,7 +8,7 @@ namespace Links.Schema
 {
     public class LinksMutation : ObjectGraphType
     {
-        public LinksMutation(ILinkService links, IUserService users)
+        public LinksMutation(ILinkService links, IUserService users, IVoteService votes)
         {
             Name = "Mutation";
 
@@ -45,6 +45,14 @@ namespace Links.Schema
                ),
                resolve: context => users.SignupUser(context.GetArgument<User>("user"))
                );
+            Field<VoteType>(
+                "createVote",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "userId" },
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "linkId" }
+                ),
+                resolve: context => votes.CreateVoteAsync(context.GetArgument<int>("userId"), context.GetArgument<int>("linkId"))
+                );
 
         }
     }

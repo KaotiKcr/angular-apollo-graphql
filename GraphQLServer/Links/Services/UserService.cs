@@ -11,8 +11,8 @@ namespace Links.Services
         public UserService()
         {
             _users = new List<User>();
-            _users.Add(new User(1, "Ivan Castillo", "ivan.castillo@triquimas.cr", "pass", new int[] { 3 }));
-            _users.Add(new User(2, "Mateo Castillo", "mateo.castillo@triquimas.cr", "pass", new int[] { 1, 2 }));
+            _users.Add(new User(1, "Ivan Castillo", "ivan.castillo@triquimas.cr", "pass", new int[] { 1, 2, 3 }));
+            _users.Add(new User(2, "Mateo Castillo", "mateo.castillo@triquimas.cr", "pass", new int[] { 1, 3 }));
 
         }
 

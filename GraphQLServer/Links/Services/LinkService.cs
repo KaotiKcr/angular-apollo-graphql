@@ -12,14 +12,14 @@ namespace Links.Services
         public LinkService()
         {
             _links = new List<Link>();
-            _links.Add(new Link(1, "Google", "https://www.google.com/", 2));
-            _links.Add(new Link(2, "Facebook", "https://www.facebook.com/", 2));
-            _links.Add(new Link(3, "Triquimas", "https://www.triquimas.cr/", 1));
+            _links.Add(new Link(1, "Google", "https://www.google.com/", 2, new int[] { 1, 4 }));
+            _links.Add(new Link(2, "Facebook", "https://www.facebook.com/", 2, new int[] { 2 }));
+            _links.Add(new Link(3, "Triquimas", "https://www.triquimas.cr/", 1, new int[] { 3, 5 }));
         }
 
         public Task<Link> CreateLinkAsync(Link link)
         {
-            Link newLink = new Link((_links.Count > 0) ? _links.Max(u => u.Id) + 1 : 1, link.Description, link.Url, link.UserId);
+            Link newLink = new Link((_links.Count > 0)? _links.Max(u => u.Id) + 1 : 1, link.Description, link.Url, link.UserId, null);
             _links.Add(newLink);
             return Task.FromResult(newLink);
         }
