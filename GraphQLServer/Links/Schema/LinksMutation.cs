@@ -12,15 +12,7 @@ namespace Links.Schema
         {
             Name = "Mutation";
 
-            Field<SignupUserPayloadType>(
-                "signupUser",
-                arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" },
-                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "password" }
-                ),
-                resolve: context => users.SignupUser(context.GetArgument<string>("email"), context.GetArgument<string>("password"))
-                );
-
+           
             Field<LinkType>(
                 "createLink",
                 arguments: new QueryArguments(
@@ -45,6 +37,15 @@ namespace Links.Schema
                 ),
                 resolve: context => users.CreateUserAsync(context.GetArgument<User>("user"))
                 );
+
+            Field<SigninUserPayloadType>(
+               "signinUser",
+               arguments: new QueryArguments(
+                   new QueryArgument<NonNullGraphType<UserInputType>> { Name = "user" }
+               ),
+               resolve: context => users.SignupUser(context.GetArgument<User>("user"))
+               );
+
         }
     }
 }

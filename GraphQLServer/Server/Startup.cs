@@ -35,7 +35,7 @@ namespace Server
 
             services.AddSingleton<LinkType>();
             services.AddSingleton<UserType>();
-            services.AddSingleton<SignupUserPayloadType>();
+            services.AddSingleton<SigninUserPayloadType>();
 
             services.AddSingleton<LinkInputType>();
             services.AddSingleton<UserInputType>();

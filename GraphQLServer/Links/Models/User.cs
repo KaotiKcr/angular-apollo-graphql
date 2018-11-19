@@ -4,6 +4,10 @@ namespace Links.Models
 {
     public class User
     {
+        public User()
+        {
+
+        }
         public User(int id, string name, string email, string password, int[] links)
         {
             Id = id;

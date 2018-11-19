@@ -38,12 +38,12 @@ namespace Links.Services
             return Task.FromResult(_users.AsEnumerable());
         }
 
-        public Task<SignupUserPayload> SignupUser(string email, string password)
+        public Task<SigninUserPayload> SignupUser(User user)
         {
-            User user = GetUserByEmailAsync(email).Result;
-            if (user.Password == password)
+            User validUser = GetUserByEmailAsync(user.Email).Result;
+            if (user.Password == validUser.Password)
             {
-                return Task.FromResult(new SignupUserPayload(user.Id, "kaotik"));
+                return Task.FromResult(new SigninUserPayload(validUser.Id, "kaotik"));
             }
             return null;
         }
@@ -56,6 +56,6 @@ namespace Links.Services
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByEmailAsync(string email);
         Task<IEnumerable<User>> GetUsersAsync();
-        Task<SignupUserPayload> SignupUser(string email, string password);
+        Task<SigninUserPayload> SignupUser(User user);
     }
 }

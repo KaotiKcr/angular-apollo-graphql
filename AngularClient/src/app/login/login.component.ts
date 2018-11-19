@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AuthService } from '../auth.service';
 import { GS_AUTH_TOKEN, GS_USER_ID } from '../constants';
+import { Router } from '@angular/router';
+import { Apollo } from 'apollo-angular';
+import { SIGNIN_USER_MUTATION, CREATE_USER_MUTATION } from '../graphql';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +16,55 @@ export class LoginComponent implements OnInit {
   password = '';
   name = '';
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private router: Router,
+    private authService: AuthService,
+    private apollo: Apollo) {
+}
 
   ngOnInit() {
   }
 
   confirm() {
-    // ... you'll implement this in a bit
+    if (this.login) {
+      this.apollo.mutate({
+        mutation: SIGNIN_USER_MUTATION,
+        variables: {
+          user: {
+            email: this.email,
+            password: this.password
+          }
+        }
+      }).subscribe((result) => {
+        const id = result.data.signinUser.user.id;
+        const token = result.data.signinUser.token;
+        this.saveUserData(id, token);
+
+        this.router.navigate(['/']);
+
+      }, (error) => {
+        alert(error);
+      });
+    } else {
+      this.apollo.mutate({
+        mutation: CREATE_USER_MUTATION,
+        variables: {
+          user: {
+            name: this.name,
+            email: this.email,
+            password: this.password
+          }
+        }
+      }).subscribe((result) => {
+        const id = result.data.signinUser.user.id;
+        const token = result.data.signinUser.token;
+        this.saveUserData(id, token);
+
+        this.router.navigate(['/']);
+
+      }, (error) => {
+        alert(error);
+      });
+    }
   }
 
   saveUserData(id, token) {

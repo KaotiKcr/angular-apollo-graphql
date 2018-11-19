@@ -11,7 +11,7 @@ namespace Links.Schema.InputTypes
         public UserInputType()
         {
             Name = "UserInput";            
-            Field(x => x.Name);
+            Field(x => x.Name, nullable: true);
             Field(x => x.Email);
             Field(x => x.Password);
         }

@@ -63,3 +63,45 @@ export interface DeleteLinkMutationResponse {
   deleteLink: Link;
 }
 
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUserMutation($user: UserInput!) {
+    createUser(user: $user) {
+      id
+    }
+
+    signinUser(user: $user) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`;
+
+export interface CreateUserMutationResponse {
+  loading: boolean;
+  createUser: User;
+  signinUser: {
+    token: string;
+    user?: User;
+  };
+}
+
+export const SIGNIN_USER_MUTATION = gql`
+  mutation SigninUserMutation($user: UserInput!) {
+    signinUser(user: $user) {
+      token
+      user {
+        id
+      }
+    }
+  }
+`;
+
+export interface CreateUserMutationResponse {
+  loading: boolean;
+  signinUser: {
+    token: string;
+    user?: User;
+  };
+}

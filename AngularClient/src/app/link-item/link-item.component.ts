@@ -5,6 +5,8 @@ import { DELETE_LINK_MUTATION, DeleteLinkMutationResponse } from '../graphql';
 import { ALL_LINKS_QUERY } from '../graphql';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 
 @Component({
@@ -15,10 +17,17 @@ import { Router } from '@angular/router';
 export class LinkItemComponent implements OnInit {
   @Input()
   link: Link;
+  logged = false;
 
-  constructor(public apollo: Apollo, public router: Router) {}
+  constructor(public apollo: Apollo, public router: Router, private authService: AuthService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authService.isAuthenticated.pipe(
+      distinctUntilChanged()
+    ).subscribe(isAuthenticated => {
+      this.logged = isAuthenticated;
+    });
+  }
 
   deleteLink() {
     this.apollo

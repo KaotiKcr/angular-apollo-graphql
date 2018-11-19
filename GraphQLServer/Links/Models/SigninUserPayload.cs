@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Links.Models
 {
-    public class SignupUserPayload
+    public class SigninUserPayload
     {
-        public SignupUserPayload(int id, string token)
+        public SigninUserPayload(int id, string token)
         {
             Id = id;
             Token = token;

@@ -15,7 +15,7 @@ namespace Links.Schema.Types
             Field(d => d.Description).Description("The description of the link.");
             Field(d => d.Url).Description("The url of the link.");
             Field<UserType>(
-                "user",
+                "postedBy",
                 resolve: context => users.GetUserByIdAsync(context.Source.UserId)
                 );
         }
