@@ -2,6 +2,9 @@ C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcorea
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Server.runtimeconfig.json
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Server.runtimeconfig.dev.json
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Server.dll
+C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Server.pdb
+C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Links.dll
+C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Links.pdb
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.csprojAssemblyReference.cache
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.csproj.CoreCompileInputs.cache
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.RazorAssemblyInfo.cache
@@ -9,9 +12,6 @@ C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcorea
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.AssemblyInfoInputs.cache
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.AssemblyInfo.cs
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.RazorTargetAssemblyInfo.cache
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Server.pdb
+C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.csproj.CopyComplete
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.dll
 C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.pdb
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Links.dll
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\bin\Debug\netcoreapp2.1\Links.pdb
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Server\obj\Debug\netcoreapp2.1\Server.csproj.CopyComplete

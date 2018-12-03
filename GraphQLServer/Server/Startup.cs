@@ -3,6 +3,7 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using Links.Schema;
+using Links.Schema.EventTypes;
 using Links.Schema.InputTypes;
 using Links.Schema.Types;
 using Links.Services;
@@ -30,6 +31,7 @@ namespace Server
             services.AddSingleton<ILinkService, LinkService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IVoteService, VoteService>();
+            services.AddSingleton<IVoteEventService, VoteEventService>();
 
             //graphql
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
@@ -42,8 +44,12 @@ namespace Server
             services.AddSingleton<LinkInputType>();
             services.AddSingleton<UserInputType>();
 
+            services.AddSingleton<VoteEventType>();
+
             services.AddSingleton<LinksQuery>();
             services.AddSingleton<LinksMutation>();
+            services.AddSingleton<LinksSubscription>();
+
             services.AddSingleton<ISchema, LinksSchema>();
 
             services.AddGraphQL(_ =>
@@ -76,3 +82,4 @@ namespace Server
         }
     }
 }
+

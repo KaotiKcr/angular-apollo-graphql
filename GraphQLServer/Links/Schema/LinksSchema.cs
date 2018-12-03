@@ -9,6 +9,7 @@ namespace Links.Schema
         {
             Query = resolver.Resolve<LinksQuery>();
             Mutation = resolver.Resolve<LinksMutation>();
+            Subscription = resolver.Resolve<LinksSubscription>();
         }
     }
 }
