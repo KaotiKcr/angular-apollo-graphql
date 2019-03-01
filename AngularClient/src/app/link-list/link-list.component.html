@@ -1,8 +1,23 @@
 <h4 *ngIf="loading">Loading...</h4>
-<h1 class="is-size-1 has-text-white">
-  {{ (isNewPage | async) ? 'All Links' : 'Top Links' }}
-</h1>
-<h4 class="is-size-4 has-text-white">{{ count }} links</h4>
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <h1 class="is-size-1 has-text-white">
+        {{ (isNewPage | async) ? 'All Links' : 'Top Links' }}
+      </h1>
+    </div>
+    <div class="level-item">
+      <h3 class="is-size-3 has-text-white">{{ count }} links</h3>
+    </div>
+  </div>
+  <div class="level-right" *ngIf="(isNewPage | async) && hasNextPage">
+    <div class="level-item">
+      <button class="button is-primary" (click)="fetchMore()">
+        Fetch More
+      </button>
+    </div>
+  </div>
+</div>
 <div class="row columns is-multiline has-text-centered">
   <app-link-item
     class="column is-one-third"
@@ -13,30 +28,4 @@
     [updateStoreAfterVote]="updateStoreAfterVote"
   >
   </app-link-item>
-</div>
-<div *ngIf="(isNewPage | async)">
-  <div class="level">
-    <div class="level-left">
-      <div class="level-item">
-        <button
-          class="button is-primary"
-          *ngIf="!(isFirstPage | async)"
-          (click)="previousPage()"
-        >
-          Previous
-        </button>
-      </div>
-    </div>
-    <div class="level-right">
-      <div class="level-item">
-        <button
-          class="button is-primary"
-          *ngIf="(morePages | async)"
-          (click)="nextPage()"
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  </div>
 </div>

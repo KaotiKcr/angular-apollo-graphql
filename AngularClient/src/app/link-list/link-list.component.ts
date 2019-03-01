@@ -1,20 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Link } from '../../models/link.model';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 
 import {
   ALL_LINKS_QUERY,
   AllLinksQueryResponse,
   NEW_LINKS_SUBSCRIPTION,
   NEW_VOTES_SUBSCRIPTION,
-  DELETE_LINKS_SUBSCRIPTION
+  DELETE_LINKS_SUBSCRIPTION,
+  AllLinksQueryVariable
 } from '../graphql';
-import { Subscription, Observable, combineLatest } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { PAGE_SIZE } from '../constants';
-import { ApolloQueryResult } from 'apollo-client';
 import _ from 'lodash';
 
 @Component({
@@ -23,6 +23,9 @@ import _ from 'lodash';
   styleUrls: ['./link-list.component.css']
 })
 export class LinkListComponent implements OnInit, OnDestroy {
+  allLinksQuery: QueryRef<any>;
+  hasNextPage = false;
+  cursor: String;
   allLinks: Link[] = [];
   loading = true;
   logged = false;
@@ -31,14 +34,10 @@ export class LinkListComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  first$: Observable<number>;
-  skip$: Observable<number>;
-
   constructor(
     private apollo: Apollo,
     private authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -48,36 +47,20 @@ export class LinkListComponent implements OnInit, OnDestroy {
         this.logged = isAuthenticated;
       });
 
-    const pageParams$: Observable<number> = this.route.paramMap.pipe(
-      map(params => {
-        return parseInt(params.get('page'), 10);
-      })
-    );
-
-    const path$: Observable<string> = this.route.url.pipe(
-      map(segments => segments.toString())
-    );
-
-    this.first$ = path$.pipe(
-      map(path => {
-        const isNewPage = path.includes('new');
-        return isNewPage ? this.linksPerPage : 100;
-      })
-    );
-
-    this.skip$ = combineLatest(path$, pageParams$).pipe(
-      map(([path, page]) => {
-        const isNewPage = path.includes('new');
-        return isNewPage ? (page - 1) * this.linksPerPage : 0;
-      })
-    );
-
-    const getQuery = (
-      variables
-    ): Observable<ApolloQueryResult<AllLinksQueryResponse>> => {
-      const query = this.apollo.watchQuery<AllLinksQueryResponse>({
+    const getQuery = (): QueryRef<
+      AllLinksQueryResponse,
+      AllLinksQueryVariable
+    > => {
+      const query = this.apollo.watchQuery<
+        AllLinksQueryResponse,
+        AllLinksQueryVariable
+      >({
         query: ALL_LINKS_QUERY,
-        variables
+        variables: {
+          after: this.cursor,
+          first: this.linksPerPage
+        },
+        fetchPolicy: 'network-only'
       });
 
       query.subscribeToMore({
@@ -93,7 +76,9 @@ export class LinkListComponent implements OnInit, OnDestroy {
             ...previous,
             links: {
               items: [newLink, ...previous.links.items],
-              __typename: previous.links.__typename
+              __typename: previous.links.__typename,
+              totalCount: previous.links.totalCount + 1,
+              pageInfo: previous.links.pageInfo
             }
           };
         }
@@ -110,12 +95,13 @@ export class LinkListComponent implements OnInit, OnDestroy {
           const newAllLinks = previous.links.items.filter(
             item => item.id !== deletedLink.id
           );
-
           return {
             ...previous,
             links: {
               items: newAllLinks,
-              __typename: previous.links.__typename
+              __typename: previous.links.__typename,
+              totalCount: previous.links.totalCount - 1,
+              pageInfo: previous.links.pageInfo
             }
           };
         }
@@ -140,48 +126,28 @@ export class LinkListComponent implements OnInit, OnDestroy {
             ...previous,
             links: {
               items: newAllLinks,
-              __typename: previous.links.__typename
+              __typename: previous.links.__typename,
+              totalCount: previous.links.totalCount,
+              pageInfo: previous.links.pageInfo
             }
           };
         }
       });
-      return query.valueChanges;
+      return query;
     };
 
-    // 6
-    const allLinkQuery: Observable<
-      ApolloQueryResult<AllLinksQueryResponse>
-    > = combineLatest(this.first$, this.skip$, (first, skip) => ({
-      first,
-      skip
-    })).pipe(switchMap((variables: any) => getQuery(variables)));
-
-    const querySubscription = allLinkQuery.subscribe(response => {
-      console.log(response);
-
-      this.allLinks = response.data.links.items;
-      this.count = response.data.links.totalCount;
-      this.loading = false;
-    });
+    this.allLinksQuery = getQuery();
+    const querySubscription = this.allLinksQuery.valueChanges.subscribe(
+      response => {
+        this.allLinks = response.data.links.items;
+        this.count = response.data.links.totalCount;
+        this.cursor = response.data.links.pageInfo.endCursor;
+        this.hasNextPage = response.data.links.pageInfo.hasNextPage;
+        this.loading = false;
+      }
+    );
 
     this.subscriptions = [...this.subscriptions, querySubscription];
-  }
-
-  updateStoreAfterVote(store, createVote, linkId) {
-    let variables;
-
-    combineLatest(this.first$, this.skip$, (first, skip) => ({ first, skip }))
-      .pipe(take(1))
-      .subscribe(values => (variables = values));
-
-    const data = store.readQuery({
-      query: ALL_LINKS_QUERY,
-      variables
-    });
-    const votedLink = data.links.items.find(link => link.id === linkId);
-    votedLink.votes = createVote.link.votes;
-
-    store.writeQuery({ query: ALL_LINKS_QUERY, data });
   }
 
   get orderedLinks(): Observable<Link[]> {
@@ -197,14 +163,13 @@ export class LinkListComponent implements OnInit, OnDestroy {
   }
 
   get isFirstPage(): Observable<boolean> {
-    console.log('isFirstPage');
     return this.route.paramMap
       .pipe(
         map(params => {
-          return parseInt(params.get('page'), 10);
+          return params.get('after');
         })
       )
-      .pipe(map(page => page === 1));
+      .pipe(map(after => after === null));
   }
 
   get isNewPage(): Observable<boolean> {
@@ -213,33 +178,48 @@ export class LinkListComponent implements OnInit, OnDestroy {
       .pipe(map(path => path.includes('new')));
   }
 
-  get pageNumber(): Observable<number> {
-    return this.route.paramMap.pipe(
-      map(params => {
-        return parseInt(params.get('page'), 10);
-      })
-    );
-  }
+  // get pageAfter(): Observable<string> {
+  //   return this.route.paramMap.pipe(
+  //     map(params => {
+  //       return params.get('after');
+  //     })
+  //   );
+  // }
 
-  get morePages(): Observable<boolean> {
-    return this.pageNumber.pipe(
-      map(pageNumber => pageNumber < this.count / this.linksPerPage)
-    );
-  }
+  // get morePages(): Observable<boolean> {
+  //   return this.pageAfter.pipe(
+  //     map(pageAfter => pageAfter < this.count / this.linksPerPage)
+  //   );
+  // }
 
-  nextPage() {
-    const page = parseInt(this.route.snapshot.params.page, 10);
-    if (page < this.count / PAGE_SIZE) {
-      const nextPage = page + 1;
-      this.router.navigate([`/new/${nextPage}`]);
-    }
-  }
+  fetchMore() {
+    if (this.hasNextPage) {
+      this.allLinksQuery.fetchMore({
+        query: ALL_LINKS_QUERY,
+        variables: {
+          after: this.cursor,
+          first: this.linksPerPage
+        },
+        updateQuery: (previous, { fetchMoreResult }) => {
+          if (!fetchMoreResult) {
+            return previous;
+          }
 
-  previousPage() {
-    const page = parseInt(this.route.snapshot.params.page, 10);
-    if (page > 1) {
-      const previousPage = page - 1;
-      this.router.navigate([`/new/${previousPage}`]);
+          const newLinks = fetchMoreResult.links.items.slice();
+          newLinks.forEach(function(newLink) {
+            if (!previous.links.items.find(link => link.id === newLink.id)) {
+              previous.links.items.push(newLink);
+            }
+          });
+
+          previous.links.totalCount = fetchMoreResult.links.totalCount;
+          previous.links.pageInfo.endCursor =
+            fetchMoreResult.links.pageInfo.endCursor;
+          previous.links.pageInfo.hasNextPage =
+            fetchMoreResult.links.pageInfo.hasNextPage;
+          return previous;
+        }
+      });
     }
   }
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GraphQLServer.Models
+﻿namespace GraphQLServer.Models
 {
     using System;
 
@@ -11,8 +6,8 @@ namespace GraphQLServer.Models
     {
         public Link()
         {
-            CreatedAt = DateTimeOffset.Now;
-            UpdatedAt = DateTimeOffset.Now;
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
         }
 
         public int Id { get; set; }

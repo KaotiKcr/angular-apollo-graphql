@@ -31,41 +31,41 @@ namespace GraphQLServer.Repositories
 
         public Task<List<User>> GetUsers(
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Users
-                .If(createdAfter.HasValue, x => x.Where(y => y.CreatedAt > createdAfter.Value))
+                .If(createdAfter.HasValue, x => x.Where(y => y.Id > createdAfter.Value))
                 .If(first.HasValue, x => x.Take(first.Value))
                 .ToList());
 
         public Task<List<User>> GetUsersReverse(
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Users
-                .If(createdBefore.HasValue, x => x.Where(y => y.CreatedAt < createdBefore.Value))
+                .If(createdBefore.HasValue, x => x.Where(y => y.Id < createdBefore.Value))
                 .If(last.HasValue, x => x.TakeLast(last.Value))
                 .ToList());
 
         public Task<bool> GetHasNextPage(
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Users
-                .If(createdAfter.HasValue, x => x.Where(y => y.CreatedAt > createdAfter.Value))
+                .If(createdAfter.HasValue, x => x.Where(y => y.Id > createdAfter.Value))
                 .Skip(first.Value)
                 .Any());
 
         public Task<bool> GetHasPreviousPage(
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Users
-                .If(createdBefore.HasValue, x => x.Where(y => y.CreatedAt < createdBefore.Value))
+                .If(createdBefore.HasValue, x => x.Where(y => y.Id < createdBefore.Value))
                 .SkipLast(last.Value)
                 .Any());
 

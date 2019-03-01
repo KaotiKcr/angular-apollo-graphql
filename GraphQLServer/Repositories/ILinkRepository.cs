@@ -9,7 +9,6 @@ namespace GraphQLServer.Repositories
     public interface ILinkRepository
     {
         IObservable<Link> WhenLinkCreated { get; }
-
         IObservable<Link> WhenLinkDeleted { get; }
 
         Task<Link> GetLink(
@@ -24,25 +23,25 @@ namespace GraphQLServer.Repositories
         Task<List<Link>> GetLinks(
             string filter, 
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken);       
 
         Task<List<Link>> GetLinksReverse(
             string filter,
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken);
 
         Task<bool> GetHasNextPage(
             string filter,
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken);
 
         Task<bool> GetHasPreviousPage(
             string filter,
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken);
         
         Task<int> GetTotalCount(

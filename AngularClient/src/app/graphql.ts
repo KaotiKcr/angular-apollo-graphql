@@ -25,6 +25,12 @@ export const ALL_LINKS_QUERY = gql`
         }
       }
       totalCount
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
     }
   }
 `;
@@ -44,6 +50,14 @@ export interface PageInfo {
 
 export interface AllLinksQueryResponse {
   links: LinkConnection;
+}
+
+export interface AllLinksQueryVariable {
+  after?: String;
+  first?: number;
+  last?: number;
+  before?: String;
+  searchText?: String;
 }
 
 export const ALL_USERS_QUERY = gql`

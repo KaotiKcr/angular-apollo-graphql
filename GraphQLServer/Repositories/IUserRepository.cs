@@ -16,22 +16,22 @@ namespace GraphQLServer.Repositories
 
         Task<List<User>> GetUsers(
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken);
 
         Task<List<User>> GetUsersReverse(
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken);
 
         Task<bool> GetHasNextPage(
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken);
 
         Task<bool> GetHasPreviousPage(
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken);
 
         Task<int> GetTotalCount(

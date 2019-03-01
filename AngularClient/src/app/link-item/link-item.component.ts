@@ -61,15 +61,6 @@ export class LinkItemComponent implements OnInit, OnDestroy {
         mutation: DELETE_LINK_MUTATION,
         variables: {
           id: this.link.id
-        },
-        update: (store, { data: { deleteLink } }) => {
-          const data: any = store.readQuery<AllLinksQueryResponse>({
-            query: ALL_LINKS_QUERY
-          });
-          data.links.items = data.links.items.filter(
-            item => item.id !== deleteLink.id
-          );
-          store.writeQuery({ query: ALL_LINKS_QUERY, data });
         }
       })
       .subscribe(response => {
@@ -95,9 +86,6 @@ export class LinkItemComponent implements OnInit, OnDestroy {
         variables: {
           userId,
           linkId
-        },
-        update: (store, { data: { createVote } }) => {
-          this.updateStoreAfterVote(store, createVote, linkId);
         }
       })
       .subscribe();

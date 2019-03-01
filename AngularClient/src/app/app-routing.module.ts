@@ -9,10 +9,10 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/new/1'
+    redirectTo: '/new/'
   },
   {
-    path: 'new/:page',
+    path: 'new/',
     component: LinkListComponent,
     pathMatch: 'full'
   },

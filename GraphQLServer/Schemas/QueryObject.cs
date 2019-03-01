@@ -82,9 +82,9 @@ namespace GraphQLServer.Schemas
             ResolveConnectionContext<object> context)
         {
             var first = context.First;
-            var afterCursor = Cursor.FromCursor<DateTime?>(context.After);
+            var afterCursor = Cursor.FromCursor<int?>(context.After);
             var last = context.Last;
-            var beforeCursor = Cursor.FromCursor<DateTime?>(context.Before);
+            var beforeCursor = Cursor.FromCursor<int?>(context.Before);
             var cancellationToken = context.CancellationToken;
             var searchText = context.GetArgument<string>("searchText");
 
@@ -98,7 +98,7 @@ namespace GraphQLServer.Schemas
             var hasNextPage = getHasNextPageTask.Result;
             var hasPreviousPage = getHasPreviousPageTask.Result;
             var totalCount = totalCountTask.Result;
-            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(links, x => x.CreatedAt);
+            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(links, x => x.Id);
 
             return new Connection<Link>()
             {
@@ -106,7 +106,7 @@ namespace GraphQLServer.Schemas
                     .Select(x =>
                         new Edge<Link>()
                         {
-                            Cursor = Cursor.ToCursor(x.CreatedAt),
+                            Cursor = Cursor.ToCursor(x.Id),
                             Node = x
                         })
                     .ToList(),
@@ -125,9 +125,9 @@ namespace GraphQLServer.Schemas
             ILinkRepository linkRepository,
             string searchText,
             int? first,
-            DateTime? afterCursor,
+            int? afterCursor,
             int? last,
-            DateTime? beforeCursor,
+            int? beforeCursor,
             CancellationToken cancellationToken)
         {
             Task<List<Link>> getLinksTask;
@@ -147,7 +147,7 @@ namespace GraphQLServer.Schemas
             ILinkRepository linkRepository,
             string searchText,
             int? first,
-            DateTime? afterCursor,
+            int? afterCursor,
             CancellationToken cancellationToken)
         {
             if (first.HasValue)
@@ -164,7 +164,7 @@ namespace GraphQLServer.Schemas
             ILinkRepository linkRepository,
             string searchText,
             int? last,
-            DateTime? beforeCursor,
+            int? beforeCursor,
             CancellationToken cancellationToken)
         {
             if (last.HasValue)
@@ -183,9 +183,9 @@ namespace GraphQLServer.Schemas
             ResolveConnectionContext<object> context)
         {
             var first = context.First;
-            var afterCursor = Cursor.FromCursor<DateTime?>(context.After);
+            var afterCursor = Cursor.FromCursor<int?>(context.After);
             var last = context.Last;
-            var beforeCursor = Cursor.FromCursor<DateTime?>(context.Before);
+            var beforeCursor = Cursor.FromCursor<int?>(context.Before);
             var cancellationToken = context.CancellationToken;
 
             var getUsersTask = GetUsers(userRepository, first, afterCursor, last, beforeCursor, cancellationToken);
@@ -198,7 +198,7 @@ namespace GraphQLServer.Schemas
             var hasNextPage = getHasNextPageTask.Result;
             var hasPreviousPage = getHasPreviousPageTask.Result;
             var totalCount = totalCountTask.Result;
-            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(users, x => x.CreatedAt);
+            var (firstCursor, lastCursor) = Cursor.GetFirstAndLastCursor(users, x => x.Id);
 
             return new Connection<User>()
             {
@@ -206,7 +206,7 @@ namespace GraphQLServer.Schemas
                     .Select(x =>
                         new Edge<User>()
                         {
-                            Cursor = Cursor.ToCursor(x.CreatedAt),
+                            Cursor = Cursor.ToCursor(x.Id),
                             Node = x
                         })
                     .ToList(),
@@ -224,9 +224,9 @@ namespace GraphQLServer.Schemas
         private static Task<List<User>> GetUsers(
             IUserRepository userRepository,
             int? first,
-            DateTime? afterCursor,
+            int? afterCursor,
             int? last,
-            DateTime? beforeCursor,
+            int? beforeCursor,
             CancellationToken cancellationToken)
         {
             Task<List<User>> getUsersTask;
@@ -245,7 +245,7 @@ namespace GraphQLServer.Schemas
         private static async Task<bool> GetHasNextPageUsers(
             IUserRepository userRepository,
             int? first,
-            DateTime? afterCursor,
+            int? afterCursor,
             CancellationToken cancellationToken)
         {
             if (first.HasValue)
@@ -261,7 +261,7 @@ namespace GraphQLServer.Schemas
         private static async Task<bool> GetHasPreviousPageUsers(
             IUserRepository userRepository,
             int? last,
-            DateTime? beforeCursor,
+            int? beforeCursor,
             CancellationToken cancellationToken)
         {
             if (last.HasValue)

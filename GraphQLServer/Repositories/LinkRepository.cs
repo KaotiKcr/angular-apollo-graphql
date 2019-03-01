@@ -36,11 +36,11 @@ namespace GraphQLServer.Repositories
         public Task<List<Link>> GetLinks(
             string filter,
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Links
-                .If(createdAfter.HasValue, x => x.Where(y => y.CreatedAt > createdAfter.Value))
+                .If(createdAfter.HasValue, x => x.Where(y => y.Id > createdAfter.Value))
                 .If(!string.IsNullOrEmpty(filter), x => x.Where(y => y.Description.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0))
                 .If(first.HasValue, x => x.Take(first.Value))
                 .ToList());
@@ -48,11 +48,11 @@ namespace GraphQLServer.Repositories
         public Task<List<Link>> GetLinksReverse(
             string filter,
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
-                .Links
-                .If(createdBefore.HasValue, x => x.Where(y => y.CreatedAt < createdBefore.Value))
+                .Links                
+                .If(createdBefore.HasValue, x => x.Where(y => y.Id < createdBefore.Value))
                 .If(!string.IsNullOrEmpty(filter), x => x.Where(y => y.Description.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0))
                 .If(last.HasValue, x => x.TakeLast(last.Value))
                 .ToList());
@@ -60,11 +60,11 @@ namespace GraphQLServer.Repositories
         public Task<bool> GetHasNextPage(
             string filter,
             int? first,
-            DateTime? createdAfter,
+            int? createdAfter,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Links
-                .If(createdAfter.HasValue, x => x.Where(y => y.CreatedAt > createdAfter.Value))
+                .If(createdAfter.HasValue, x => x.Where(y => y.Id > createdAfter.Value))
                 .If(!string.IsNullOrEmpty(filter), x => x.Where(y => y.Description.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0))
                 .Skip(first.Value)
                 .Any());
@@ -72,11 +72,11 @@ namespace GraphQLServer.Repositories
         public Task<bool> GetHasPreviousPage(
             string filter,
             int? last,
-            DateTime? createdBefore,
+            int? createdBefore,
             CancellationToken cancellationToken) =>
             Task.FromResult(Database
                 .Links
-                .If(createdBefore.HasValue, x => x.Where(y => y.CreatedAt < createdBefore.Value))
+                .If(createdBefore.HasValue, x => x.Where(y => y.Id < createdBefore.Value))
                 .If(!string.IsNullOrEmpty(filter), x => x.Where(y => y.Description.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0))
                 .SkipLast(last.Value)
                 .Any());
