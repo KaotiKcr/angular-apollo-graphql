@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 
 import { CREATE_LINK_MUTATION, CreateLinkMutationResponse } from '../graphql';
-import { ALL_LINKS_QUERY, AllLinkQueryResponse } from '../graphql';
+import { ALL_LINKS_QUERY, AllLinksQueryResponse } from '../graphql';
 import { GS_USER_ID } from '../constants';
 
 @Component({
@@ -42,11 +42,11 @@ export class CreateLinkComponent implements OnInit {
           }
         },
         update: (store, { data: { createLink } }) => {
-          const data: any = store.readQuery({
+          const data: any = store.readQuery<AllLinksQueryResponse>({
             query: ALL_LINKS_QUERY
           });
 
-          data.links.push(createLink);
+          data.links.items.push(createLink);
           store.writeQuery({ query: ALL_LINKS_QUERY, data });
         }
       })

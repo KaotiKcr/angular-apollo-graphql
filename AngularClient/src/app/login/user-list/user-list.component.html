@@ -1,0 +1,14 @@
+<h4 *ngIf="loading">Loading...</h4>
+<div class="card round">
+  <div class="card-content content">
+    <h1>Current Users</h1>
+    <div class="row columns is-multiline">
+      <app-user-item
+        class="column is-one-half"
+        *ngFor="let user of allUsers"
+        [user]="user"
+      >
+      </app-user-item>
+    </div>
+  </div>
+</div>

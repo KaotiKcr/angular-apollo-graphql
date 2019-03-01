@@ -15,15 +15,21 @@ import { CreateLinkComponent } from './create-link/create-link.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
+import { UserListComponent } from './login/user-list/user-list.component';
+import { UserItemComponent } from './login/user-item/user-item.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LinkItemComponent,
     LinkListComponent,
+    UserItemComponent,
+    UserListComponent,
     CreateLinkComponent,
     HeaderComponent,
-    LoginComponent
+    LoginComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -35,4 +41,4 @@ import { AuthService } from './auth.service';
   providers: [AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

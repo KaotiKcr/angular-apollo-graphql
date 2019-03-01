@@ -5,7 +5,8 @@ import {
   ALL_LINKS_QUERY,
   DELETE_LINK_MUTATION,
   DeleteLinkMutationResponse,
-  CREATE_VOTE_MUTATION
+  CREATE_VOTE_MUTATION,
+  AllLinksQueryResponse
 } from '../graphql';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
@@ -19,7 +20,6 @@ import { FetchResult } from 'apollo-link';
 interface UpdateStoreAfterVoteCallback {
   (proxy: DataProxy, mutationResult: FetchResult, linkId: number);
 }
-
 
 @Component({
   selector: 'app-link-item',
@@ -37,6 +37,9 @@ export class LinkItemComponent implements OnInit, OnDestroy {
 
   @Input()
   updateStoreAfterVote: UpdateStoreAfterVoteCallback;
+
+  @Input()
+  index = 0;
 
   constructor(
     public apollo: Apollo,
@@ -60,11 +63,12 @@ export class LinkItemComponent implements OnInit, OnDestroy {
           id: this.link.id
         },
         update: (store, { data: { deleteLink } }) => {
-          const data: any = store.readQuery({
+          const data: any = store.readQuery<AllLinksQueryResponse>({
             query: ALL_LINKS_QUERY
           });
-
-          data.links = data.links.filter(item => item.id !== deleteLink.id);
+          data.links.items = data.links.items.filter(
+            item => item.id !== deleteLink.id
+          );
           store.writeQuery({ query: ALL_LINKS_QUERY, data });
         }
       })
@@ -76,7 +80,9 @@ export class LinkItemComponent implements OnInit, OnDestroy {
 
   voteForLink() {
     const userId = localStorage.getItem(GS_USER_ID);
-    const voterIds = this.link.votes.map(vote => vote.user.id);
+    const voterIds = this.link.votes.map(vote => {
+      return vote.user.id;
+    });
     if (voterIds.includes(+userId)) {
       alert(`User (${userId}) already voted for this link.`);
       return;
@@ -107,4 +113,3 @@ export class LinkItemComponent implements OnInit, OnDestroy {
     }
   }
 }
-

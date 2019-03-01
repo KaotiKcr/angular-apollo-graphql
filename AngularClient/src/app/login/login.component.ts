@@ -1,9 +1,13 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { GS_AUTH_TOKEN, GS_USER_ID } from '../constants';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-import { SIGNIN_USER_MUTATION, CREATE_USER_MUTATION } from '../graphql';
+import {
+  SIGNIN_USER_MUTATION,
+  CREATE_USER_MUTATION,
+  ALL_USERS_QUERY
+} from '../graphql';
 
 @Component({
   selector: 'app-login',
@@ -16,54 +20,65 @@ export class LoginComponent implements OnInit {
   password = '';
   name = '';
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private authService: AuthService,
-    private apollo: Apollo) {
-}
+    private apollo: Apollo
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   confirm() {
     if (this.login) {
-      this.apollo.mutate({
-        mutation: SIGNIN_USER_MUTATION,
-        variables: {
-          user: {
-            email: this.email,
-            password: this.password
+      this.apollo
+        .mutate({
+          mutation: SIGNIN_USER_MUTATION,
+          variables: {
+            signinUser: {
+              email: this.email,
+              password: this.password
+            }
           }
-        }
-      }).subscribe((result) => {
-        const id = result.data.signinUser.user.id;
-        const token = result.data.signinUser.token;
-        this.saveUserData(id, token);
-
-        this.router.navigate(['/']);
-
-      }, (error) => {
-        alert(error);
-      });
+        })
+        .subscribe(
+          result => {
+            if (result.data.signinUser) {
+              const id = result.data.signinUser.user.id;
+              const token = result.data.signinUser.token;
+              this.saveUserData(id, token);
+              this.router.navigate(['/']);
+            } else {
+              alert('Error at login, check our credentials');
+            }
+          },
+          error => {
+            alert(error);
+          }
+        );
     } else {
-      this.apollo.mutate({
-        mutation: CREATE_USER_MUTATION,
-        variables: {
-          user: {
-            name: this.name,
-            email: this.email,
-            password: this.password
+      this.apollo
+        .mutate({
+          mutation: CREATE_USER_MUTATION,
+          variables: {
+            user: {
+              name: this.name,
+              email: this.email,
+              password: this.password
+            }
           }
-        }
-      }).subscribe((result) => {
-        const id = result.data.signinUser.user.id;
-        const token = result.data.signinUser.token;
-        this.saveUserData(id, token);
+        })
+        .subscribe(
+          result => {
+            const id = result.data.signinUser.user.id;
+            const token = result.data.signinUser.token;
+            this.saveUserData(id, token);
 
-        this.router.navigate(['/']);
-
-      }, (error) => {
-        alert(error);
-      });
+            this.router.navigate(['/']);
+          },
+          error => {
+            alert(error);
+          }
+        );
     }
   }
 

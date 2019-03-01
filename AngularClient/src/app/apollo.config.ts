@@ -3,7 +3,10 @@ import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloLink } from 'apollo-link';
+import { split } from 'apollo-link';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
+
 import { GS_AUTH_TOKEN } from './constants';
 
 @NgModule({
@@ -11,21 +14,38 @@ import { GS_AUTH_TOKEN } from './constants';
 })
 export class GraphQLModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
-    const uri = 'http://localhost:5000/graphql';
-    const http = httpLink.create({ uri });
+    const token = localStorage.getItem(GS_AUTH_TOKEN);
+    const authorization = token ? `Bearer ${token}` : null;
+    const headers = new HttpHeaders();
+    headers.append('Authorization', authorization);
 
-    const middleware = new ApolloLink((operation, forward) => {
-      const token = localStorage.getItem(GS_AUTH_TOKEN);
-      if (token) {
-        operation.setContext({
-          headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-        });
+    const uri = 'http://localhost:5000/graphql';
+    const http = httpLink.create({ uri, headers });
+
+    const ws = new WebSocketLink({
+      uri: 'ws://localhost:5000/graphql',
+      options: {
+        reconnect: true,
+        connectionParams: {
+          authToken: token
+        }
       }
-      return forward(operation);
     });
 
+    // using the ability to split links, you can send data to each link
+    // depending on what kind of operation is being sent
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query);
+        return kind === 'OperationDefinition' && operation === 'subscription';
+      },
+      ws,
+      http
+    );
+
     apollo.create({
-      link: middleware.concat(http),
+      link: link,
       cache: new InMemoryCache()
     });
   }

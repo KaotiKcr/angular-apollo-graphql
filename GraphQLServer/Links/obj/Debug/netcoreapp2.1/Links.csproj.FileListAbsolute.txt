@@ -1,9 +1,0 @@
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\bin\Debug\netcoreapp2.1\Links.deps.json
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\bin\Debug\netcoreapp2.1\Links.dll
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\bin\Debug\netcoreapp2.1\Links.pdb
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\obj\Debug\netcoreapp2.1\Links.csprojAssemblyReference.cache
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\obj\Debug\netcoreapp2.1\Links.csproj.CoreCompileInputs.cache
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\obj\Debug\netcoreapp2.1\Links.AssemblyInfoInputs.cache
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\obj\Debug\netcoreapp2.1\Links.AssemblyInfo.cs
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\obj\Debug\netcoreapp2.1\Links.dll
-C:\KaotiK\angular\angular-apollo-graphql\GraphQLServer\Links\obj\Debug\netcoreapp2.1\Links.pdb

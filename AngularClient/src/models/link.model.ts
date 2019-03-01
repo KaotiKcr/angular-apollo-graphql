@@ -14,6 +14,7 @@ export class User {
   updatedAt: string;
   name: string;
   email: string;
+  password: string;
   links?: [Link];
   votes?: [Vote];
 }

@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28010.2050
+VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{B2049BE3-48EF-4F7B-AA4B-82DC220EA46A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Links", "Links\Links.csproj", "{3F11BBCC-1C6F-491E-AB2A-E944F0528FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLServer", "GraphQLServer.csproj", "{4578A3E6-65EA-4EC5-A1C4-0923472E8ADA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B2049BE3-48EF-4F7B-AA4B-82DC220EA46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2049BE3-48EF-4F7B-AA4B-82DC220EA46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2049BE3-48EF-4F7B-AA4B-82DC220EA46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2049BE3-48EF-4F7B-AA4B-82DC220EA46A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F11BBCC-1C6F-491E-AB2A-E944F0528FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F11BBCC-1C6F-491E-AB2A-E944F0528FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F11BBCC-1C6F-491E-AB2A-E944F0528FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F11BBCC-1C6F-491E-AB2A-E944F0528FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4578A3E6-65EA-4EC5-A1C4-0923472E8ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4578A3E6-65EA-4EC5-A1C4-0923472E8ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4578A3E6-65EA-4EC5-A1C4-0923472E8ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4578A3E6-65EA-4EC5-A1C4-0923472E8ADA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FB84F4FA-6A8A-4890-ACDA-AF57FFBD3331}
+		SolutionGuid = {131B93FF-40C5-45D4-9E6A-DA0867A5A755}
 	EndGlobalSection
 EndGlobal

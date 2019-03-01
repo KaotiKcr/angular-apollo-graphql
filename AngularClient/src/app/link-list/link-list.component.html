@@ -1,11 +1,42 @@
 <h4 *ngIf="loading">Loading...</h4>
-<div class="row columns is-multiline">
+<h1 class="is-size-1 has-text-white">
+  {{ (isNewPage | async) ? 'All Links' : 'Top Links' }}
+</h1>
+<h4 class="is-size-4 has-text-white">{{ count }} links</h4>
+<div class="row columns is-multiline has-text-centered">
   <app-link-item
     class="column is-one-third"
-    *ngFor="let link of allLinks"
+    *ngFor="let link of (orderedLinks | async); let index = index"
     [link]="link"
+    [index]="index"
     [isAuthenticated]="logged"
     [updateStoreAfterVote]="updateStoreAfterVote"
   >
   </app-link-item>
+</div>
+<div *ngIf="(isNewPage | async)">
+  <div class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <button
+          class="button is-primary"
+          *ngIf="!(isFirstPage | async)"
+          (click)="previousPage()"
+        >
+          Previous
+        </button>
+      </div>
+    </div>
+    <div class="level-right">
+      <div class="level-item">
+        <button
+          class="button is-primary"
+          *ngIf="(morePages | async)"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

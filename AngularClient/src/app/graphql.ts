@@ -1,33 +1,70 @@
-import { Link, User } from '../models/link.model';
+import { Link, User, Vote } from '../models/link.model';
 import gql from 'graphql-tag';
 
 export const ALL_LINKS_QUERY = gql`
-  query AllLinksQuery {
-    links {
-      id
-      createdAt
-      updatedAt
-      url
-      description
-      postedBy {
+  query AllLinksQuery($after: String, $first: Int, $searchText: String) {
+    links(after: $after, first: $first, searchText: $searchText) {
+      items {
         id
         createdAt
         updatedAt
-        name
-        email
-      }
-      votes {
-        id
-        user {
+        url
+        description
+        postedBy {
           id
+          createdAt
+          updatedAt
+          name
+          email
         }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      totalCount
+    }
+  }
+`;
+
+export interface LinkConnection {
+  items: Link[];
+  totalCount: number;
+  pageInfo: PageInfo;
+}
+
+export interface PageInfo {
+  startCursor: String;
+  endCursor: String;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+}
+
+export interface AllLinksQueryResponse {
+  links: LinkConnection;
+}
+
+export const ALL_USERS_QUERY = gql`
+  query AllUsersQuery {
+    users {
+      items {
+        id
+        email
+        name
+        password
       }
     }
   }
 `;
 
-export interface AllLinkQueryResponse {
-  links: Link[];
+export interface UserConnection {
+  items: User[];
+}
+
+export interface AllUsersQueryResponse {
+  users: UserConnection;
 }
 
 export const CREATE_LINK_MUTATION = gql`
@@ -38,7 +75,7 @@ export const CREATE_LINK_MUTATION = gql`
       updatedAt
       url
       description
-      user {
+      postedBy {
         id
         createdAt
         updatedAt
@@ -94,8 +131,8 @@ export interface CreateUserMutationResponse {
 }
 
 export const SIGNIN_USER_MUTATION = gql`
-  mutation SigninUserMutation($user: UserInput!) {
-    signinUser(user: $user) {
+  mutation SigninUserMutation($signinUser: SigninUserInput!) {
+    signinUser(signinUser: $signinUser) {
       token
       user {
         id
@@ -104,19 +141,12 @@ export const SIGNIN_USER_MUTATION = gql`
   }
 `;
 
-export interface CreateUserMutationResponse {
-  loading: boolean;
-  signinUser: {
-    token: string;
-    user?: User;
-  };
-}
-
 export const CREATE_VOTE_MUTATION = gql`
   mutation CreateVoteMutation($userId: Int!, $linkId: Int!) {
     createVote(userId: $userId, linkId: $linkId) {
       id
       link {
+        id
         votes {
           id
           user {
@@ -138,4 +168,97 @@ export interface CreateVoteMutationResponse {
     link: Link;
     user: User;
   };
+}
+
+export const NEW_LINKS_SUBSCRIPTION = gql`
+  subscription newLink {
+    linkCreated {
+      id
+      createdAt
+      updatedAt
+      url
+      description
+      postedBy {
+        id
+        createdAt
+        updatedAt
+        name
+        email
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export interface NewLinkSubscriptionResponse {
+  linkCreated: Link;
+}
+
+export const DELETE_LINKS_SUBSCRIPTION = gql`
+  subscription deleteLink {
+    linkDeleted {
+      id
+      createdAt
+      updatedAt
+      url
+      description
+      postedBy {
+        id
+        createdAt
+        updatedAt
+        name
+        email
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export interface DeleteLinkSubscriptionResponse {
+  linkDeleted: Link;
+}
+export const NEW_VOTES_SUBSCRIPTION = gql`
+  subscription newVote {
+    voteCreated {
+      id
+      link {
+        id
+        createdAt
+        updatedAt
+        url
+        description
+        postedBy {
+          id
+          createdAt
+          updatedAt
+          name
+          email
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+        email
+      }
+    }
+  }
+`;
+
+export interface NewVoteSubscriptionResponse {
+  voteCreated: Vote;
 }

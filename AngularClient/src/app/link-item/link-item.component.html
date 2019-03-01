@@ -6,15 +6,15 @@
       class="button is-white is-pulled-right"
     >
       <i class="far fa-thumbs-up"></i>
-      {{link.votes.length}}
+      {{ link.votes.length }}
     </button>
     <p class="title">{{ link.description }}</p>
-    <p>{{link.postedBy ? link.postedBy.name : 'Unknown'}}</p>
+    <p>{{ link.postedBy ? link.postedBy.name : 'Unknown' }}</p>
     <span> {{ link.updatedAt | amTimeAgo }} </span>
   </div>
   <footer class="card-footer">
     <p class="card-footer-item">
-      <span> View on <a target="_blank" href="{{link.url}}">URL</a> </span>
+      <span> View on <a target="_blank" href="{{ link.url }}">URL</a> </span>
     </p>
     <p class="card-footer-item" *ngIf="logged">
       <a

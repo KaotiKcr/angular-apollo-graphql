@@ -1,0 +1,22 @@
+<section class="hero">
+  <div class="hero-body">
+    <input
+      type="text"
+      class="input is-large"
+      [(ngModel)]="searchText"
+      (ngModelChange)="executeSearch()"
+      placeholder="Enter search criteria"
+    />
+  </div>
+</section>
+
+<div class="row columns is-multiline">
+  <app-link-item
+    class="column is-one-third"
+    *ngFor="let link of allLinks; let index = index"
+    [link]="link"
+    [isAuthenticated]="logged"
+    [index]="index"
+  >
+  </app-link-item>
+</div>
